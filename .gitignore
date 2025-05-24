@@ -8,3 +8,5 @@ src/forms/backup/
 src/serialtool
 
 src/serialtool.res
+
+*.lps
