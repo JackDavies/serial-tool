@@ -1,0 +1,10 @@
+
+src/backup/
+
+src/lib/x86_64-linux/
+
+src/forms/backup/
+
+src/serialtool
+
+src/serialtool.res
