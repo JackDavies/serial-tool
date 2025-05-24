@@ -5,15 +5,27 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, synaser;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+  Buttons, Menus, synaser;
 
 type
 
   { TMainForm }
 
   TMainForm = class(TForm)
+    BottomPanel: TPanel;
     Button1: TButton;
+    BaudRateCombo: TComboBox;
+    DeviceComboBox: TComboBox;
+    ConnectButton: TButton;
+    InputTypeComboBox1: TComboBox;
+    OutputSettingsPanel: TPanel;
+    SendButton: TButton;
+    CenterPanel: TPanel;
+    InputTypeComboBox: TComboBox;
+    InputEdit: TEdit;
     OutputMemo: TMemo;
+    TopPanel: TPanel;
     procedure Button1Click(Sender: TObject);
   private
 

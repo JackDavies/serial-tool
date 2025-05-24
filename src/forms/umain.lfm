@@ -8,20 +8,147 @@ object MainForm: TMainForm
   ClientWidth = 618
   DesignTimePPI = 94
   LCLVersion = '2.0.10.0'
-  object Button1: TButton
-    Left = 8
-    Height = 24
-    Top = 8
-    Width = 73
-    Caption = 'Button1'
-    OnClick = Button1Click
+  object BottomPanel: TPanel
+    Left = 0
+    Height = 28
+    Top = 344
+    Width = 618
+    Align = alBottom
+    BevelOuter = bvSpace
+    ClientHeight = 28
+    ClientWidth = 618
     TabOrder = 0
+    object InputTypeComboBox: TComboBox
+      Left = 1
+      Height = 26
+      Top = 1
+      Width = 95
+      Align = alLeft
+      ItemHeight = 0
+      ItemIndex = 0
+      Items.Strings = (
+        'ASCII'
+        'Hex'
+      )
+      ParentShowHint = False
+      TabOrder = 0
+      Text = 'ASCII'
+    end
+    object InputEdit: TEdit
+      Left = 96
+      Height = 26
+      Top = 1
+      Width = 448
+      Align = alClient
+      TabOrder = 1
+    end
+    object SendButton: TButton
+      Left = 544
+      Height = 26
+      Top = 1
+      Width = 73
+      Align = alRight
+      Caption = 'Send'
+      TabOrder = 2
+    end
   end
-  object OutputMemo: TMemo
-    Left = 24
-    Height = 183
-    Top = 40
-    Width = 384
+  object CenterPanel: TPanel
+    Left = 0
+    Height = 316
+    Top = 28
+    Width = 618
+    Align = alClient
+    BevelOuter = bvSpace
+    ClientHeight = 316
+    ClientWidth = 618
     TabOrder = 1
+    object OutputMemo: TMemo
+      Left = 1
+      Height = 286
+      Top = 29
+      Width = 616
+      Align = alClient
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object OutputSettingsPanel: TPanel
+      Left = 1
+      Height = 28
+      Top = 1
+      Width = 616
+      Align = alTop
+      BevelOuter = bvSpace
+      ClientHeight = 28
+      ClientWidth = 616
+      TabOrder = 1
+      object InputTypeComboBox1: TComboBox
+        Left = 1
+        Height = 26
+        Top = 1
+        Width = 95
+        Align = alLeft
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          'ASCII'
+          'Hex'
+        )
+        ParentShowHint = False
+        TabOrder = 0
+        Text = 'ASCII'
+      end
+    end
+  end
+  object TopPanel: TPanel
+    Left = 0
+    Height = 28
+    Top = 0
+    Width = 618
+    Align = alTop
+    BevelOuter = bvSpace
+    ClientHeight = 28
+    ClientWidth = 618
+    TabOrder = 2
+    object Button1: TButton
+      Left = 8
+      Height = 24
+      Top = 3
+      Width = 73
+      Caption = 'Button1'
+      OnClick = Button1Click
+      TabOrder = 0
+    end
+    object BaudRateCombo: TComboBox
+      Left = 456
+      Height = 26
+      Top = 1
+      Width = 88
+      Align = alRight
+      AutoSize = False
+      ItemHeight = 0
+      Items.Strings = (
+        '9600'
+      )
+      TabOrder = 1
+      Text = '9600'
+    end
+    object ConnectButton: TButton
+      Left = 544
+      Height = 26
+      Top = 1
+      Width = 73
+      Align = alRight
+      Caption = 'Connect'
+      TabOrder = 2
+    end
+    object DeviceComboBox: TComboBox
+      Left = 294
+      Height = 26
+      Top = 1
+      Width = 162
+      Align = alRight
+      ItemHeight = 0
+      TabOrder = 3
+    end
   end
 end
