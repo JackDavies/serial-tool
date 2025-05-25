@@ -13,10 +13,12 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    BaudRateCombo: TComboBox;
     BottomPanel: TPanel;
     Button1: TButton;
-    BaudRateCombo: TComboBox;
+    BaudRatePanel: TPanel;
     PortLabel: TLabel;
+    BaudLabel: TLabel;
     PortListPanel: TPanel;
     ConnectButton: TButton;
     InputTypeComboBox1: TComboBox;

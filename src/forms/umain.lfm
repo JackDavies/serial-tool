@@ -119,21 +119,6 @@ object MainForm: TMainForm
       OnClick = Button1Click
       TabOrder = 0
     end
-    object BaudRateCombo: TComboBox
-      Left = 726
-      Height = 26
-      Top = 1
-      Width = 88
-      Align = alRight
-      AutoSize = False
-      ItemHeight = 0
-      ItemIndex = 0
-      Items.Strings = (
-        '9600'
-      )
-      TabOrder = 1
-      Text = '9600'
-    end
     object ConnectButton: TButton
       Left = 814
       Height = 26
@@ -141,19 +126,20 @@ object MainForm: TMainForm
       Width = 73
       Align = alRight
       Caption = 'Connect'
-      TabOrder = 2
+      TabOrder = 1
     end
     object PortListPanel: TPanel
-      Left = 424
+      Left = 340
       Height = 26
       Top = 1
       Width = 302
       Align = alRight
+      BorderSpacing.Right = 3
       BevelOuter = bvSpace
       Caption = 'PortListPanel'
       ClientHeight = 26
       ClientWidth = 302
-      TabOrder = 3
+      TabOrder = 2
       object RefreshPortsButton: TSpeedButton
         Left = 278
         Height = 24
@@ -257,6 +243,48 @@ object MainForm: TMainForm
         Alignment = taCenter
         BorderSpacing.Top = 4
         Caption = 'Port: '
+        Font.Height = -14
+        Font.Name = 'Sans'
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+    object BaudRatePanel: TPanel
+      Left = 645
+      Height = 26
+      Top = 1
+      Width = 166
+      Align = alRight
+      BorderSpacing.Right = 3
+      BevelOuter = bvSpace
+      ClientHeight = 26
+      ClientWidth = 166
+      TabOrder = 3
+      object BaudRateCombo: TComboBox
+        Left = 47
+        Height = 24
+        Top = 1
+        Width = 118
+        Align = alClient
+        AutoSize = False
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          '9600'
+        )
+        Style = csOwnerDrawFixed
+        TabOrder = 0
+        Text = '9600'
+      end
+      object BaudLabel: TLabel
+        Left = 1
+        Height = 20
+        Top = 5
+        Width = 46
+        Align = alLeft
+        Alignment = taCenter
+        BorderSpacing.Top = 4
+        Caption = 'Baud: '
         Font.Height = -14
         Font.Name = 'Sans'
         ParentColor = False
