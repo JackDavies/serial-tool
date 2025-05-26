@@ -10,3 +10,5 @@ src/serialtool
 src/serialtool.res
 
 *.lps
+
+src/units/backup/
