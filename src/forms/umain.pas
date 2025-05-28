@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Buttons, Menus, synaser, FileUtil;
+  Buttons, Menus, synaser, FileUtil, uSerialComms;
 
 type
 
@@ -15,7 +15,6 @@ type
   TMainForm = class(TForm)
     BaudRateCombo: TComboBox;
     BottomPanel: TPanel;
-    Button1: TButton;
     BaudRatePanel: TPanel;
     PortLabel: TLabel;
     BaudLabel: TLabel;
@@ -31,11 +30,17 @@ type
     InputEdit: TEdit;
     OutputMemo: TMemo;
     TopPanel: TPanel;
-    procedure Button1Click(Sender: TObject);
+    procedure ConnectButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RefreshPortsButtonClick(Sender: TObject);
   private
+    _serialThread : TSerialThread;
+  private
     procedure PopulatePortsList();
+    procedure Connect();
+    procedure Disconnect();
+    procedure OnRX(RXData : TBytes);
+    procedure OnError(ErrorMessage : string);
     function GetPortNames() : TStringList;
   public
 
@@ -51,6 +56,34 @@ implementation
 { TMainForm }
 
 {$REGION 'Private Methods'}
+
+procedure TMainForm.Connect();
+var
+  options : TSerialOptions;
+begin
+  ConnectButton.Caption:= 'Disconnect';
+  PortListPanel.Enabled := false;
+  BaudRatePanel.Enabled := false;
+
+  options := TSerialOptions.Create();
+  options.Port:= PortsComboBox.Text;
+  options.Baud:= StrToInt(BaudRateCombo.Text);
+
+  _serialThread := TSerialThread.Create(options);
+  _serialThread.OnRX := @OnRX;
+  _serialThread.OnError := @OnError;
+  _serialThread.Connect();
+end;
+
+procedure TMainForm.Disconnect();
+begin
+  ConnectButton.Caption:= 'Connect';
+  PortListPanel.Enabled := true;
+  BaudRatePanel.Enabled := true;
+
+  _serialThread.Disconnect();
+  FreeAndNil(_serialThread);
+end;
 
 { Adapted from synaser.GetSerialPortNames: string; }
 function TMainForm.GetPortNames() : TStringList;
@@ -142,8 +175,29 @@ end;
 
 {$ENDREGION}
 
-
 {$REGION 'Event Handlers'}
+
+procedure TMainForm.OnError(ErrorMessage : string);
+begin
+  OutputMemo.Append('Error: ' + ErrorMessage);
+end;
+
+procedure TMainForm.OnRX(RXData : TBytes);
+var
+  c : AnsiChar;
+  txt : AnsiString;
+  i : integer;
+  rxLength : integer;
+begin
+  rxLength := Length(RXData);
+  txt := '';
+
+  for i := 0 to rxLength - 1 do begin
+    c := Char(RXData[i]);
+    txt := txt + c;
+  end;
+  OutputMemo.Append(txt);
+end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
@@ -155,26 +209,14 @@ begin
   PopulatePortsList();
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
-var
-  serial : TBlockSerial;
-  s : string;
+procedure TMainForm.ConnectButtonClick(Sender: TObject);
 begin
-  serial := TBlockSerial.Create();
-
-  serial.LinuxLock := false;
-
-  serial.Connect('/dev/ttyACM0');
-
-  serial.Config(9600, 8, 'N', SB1, false, false);
-
-  //serial.SendString('x');
-
-  if serial.CanRead(5000) then begin
-    s := serial.Recvstring(5000);
+  if Assigned(_serialThread) then begin
+    Disconnect();
+  end
+  else begin
+    Connect();
   end;
-
-  OutputMemo.Lines.Add(s);
 end;
 
 {$ENDREGION}

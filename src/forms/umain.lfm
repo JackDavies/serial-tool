@@ -32,6 +32,7 @@ object MainForm: TMainForm
         'Hex'
       )
       ParentShowHint = False
+      Style = csOwnerDrawFixed
       TabOrder = 0
       Text = 'ASCII'
     end
@@ -95,6 +96,7 @@ object MainForm: TMainForm
           'Hex'
         )
         ParentShowHint = False
+        Style = csOwnerDrawFixed
         TabOrder = 0
         Text = 'ASCII'
       end
@@ -110,26 +112,18 @@ object MainForm: TMainForm
     ClientHeight = 28
     ClientWidth = 888
     TabOrder = 2
-    object Button1: TButton
-      Left = 8
-      Height = 24
-      Top = 3
-      Width = 73
-      Caption = 'Button1'
-      OnClick = Button1Click
-      TabOrder = 0
-    end
     object ConnectButton: TButton
-      Left = 814
+      Left = 804
       Height = 26
       Top = 1
-      Width = 73
+      Width = 83
       Align = alRight
       Caption = 'Connect'
-      TabOrder = 1
+      OnClick = ConnectButtonClick
+      TabOrder = 0
     end
     object PortListPanel: TPanel
-      Left = 340
+      Left = 330
       Height = 26
       Top = 1
       Width = 302
@@ -139,7 +133,7 @@ object MainForm: TMainForm
       Caption = 'PortListPanel'
       ClientHeight = 26
       ClientWidth = 302
-      TabOrder = 2
+      TabOrder = 1
       object RefreshPortsButton: TSpeedButton
         Left = 278
         Height = 24
@@ -250,7 +244,7 @@ object MainForm: TMainForm
       end
     end
     object BaudRatePanel: TPanel
-      Left = 645
+      Left = 635
       Height = 26
       Top = 1
       Width = 166
@@ -259,7 +253,7 @@ object MainForm: TMainForm
       BevelOuter = bvSpace
       ClientHeight = 26
       ClientWidth = 166
-      TabOrder = 3
+      TabOrder = 2
       object BaudRateCombo: TComboBox
         Left = 47
         Height = 24
