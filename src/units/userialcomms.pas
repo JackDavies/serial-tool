@@ -93,7 +93,6 @@ begin
   _serial.Connect(_options.Port);
   _serial.Config(_options.Baud, 8, 'N', SB1, false, false);
 
-  rxStream := TMemoryStream.Create;
 
   while(not Terminated) do begin
     if _serial.LastError <> 0 then begin
