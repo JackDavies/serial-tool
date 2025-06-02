@@ -30,8 +30,10 @@ type
       _sendTx : boolean;
       _txData : TBytes;
     private
-      procedure ErrorEvent();
+      procedure ErrorEvent(); overload;
+      procedure ErrorEvent(message : string); overload;
       procedure RXEvent();
+      procedure ReadRxData();
       procedure SendTxData();
     public
       OnRX : TOnRXEvent;
@@ -90,9 +92,45 @@ begin
   OnError(_serial.GetErrorDesc(_serial.LastError));
 end;
 
+procedure TSerialThread.ErrorEvent(message : string);
+begin
+  OnError(message);
+end;
+
 procedure TSerialThread.RXEvent();
 begin
   OnRX(_rxData);
+end;
+
+procedure TSerialThread.ReadRxData();
+var
+  rxLength : integer;
+  temp : AnsiString;
+  i : integer;
+begin
+  try
+    if _serial.CanReadEx(1) then begin
+      i := _serial.LastError;
+      rxLength := _serial.WaitingDataEx();
+
+      if rxLength <> 0 then begin
+        SetLength(_rxData, rxLength);
+        temp := _serial.RecvPacket(1);
+        if (Length(temp) <> 0) then begin
+          for i := 0 to rxLength - 1 do begin
+            _rxData[i] := byte(temp.Chars[i]);
+          end;
+        end;
+
+        Synchronize(@RXEvent);
+        SetLength(_rxData, 0);
+      end;
+    end;
+  except
+    on e: Exception do begin
+      ErrorEvent('ReadRxData Exception: ' + e.Message);
+    end;
+  end;
 end;
 
 procedure TSerialThread.SendTxData();
@@ -141,10 +179,6 @@ begin
 end;
 
 procedure TSerialThread.Execute();
-var
-  rxLength : integer;
-  temp : AnsiString;
-  i : integer;
 begin
   _serial.Connect(_options.Port);
   _serial.Config(_options.Baud, 8, 'N', SB1, false, false);
@@ -156,21 +190,8 @@ begin
 
     SendTxData();
 
-    if _serial.CanReadEx(1) then begin
-      i := _serial.LastError;
-      rxLength := _serial.WaitingDataEx();
+    ReadRxData();
 
-      if rxLength <> 0 then begin
-        SetLength(_rxData, rxLength);
-        temp := _serial.Recvstring(1);
-        for i := 0 to rxLength - 1 do begin
-          _rxData[i] := byte(temp.Chars[i]);
-        end;
-
-        Synchronize(@RXEvent);
-        SetLength(_rxData, 0);
-      end;
-    end;
     Sleep(50);
   end;
 end;
