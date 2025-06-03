@@ -18,7 +18,7 @@ type
     public
       Baud : integer;
       Port : string;
-      EolChar : char;
+      EolChar : AnsiString;
   end;
 
   TSerialThread = class (TThread)
@@ -135,26 +135,35 @@ end;
 
 procedure TSerialThread.SendTxData();
 var
-  stream : TMemoryStream;
+  i : integer;
+  tx : AnsiString;
+  txLength : integer;
 begin
   EnterCriticalSection(_criticalSection);
 
-  if _sendTx then begin
-    stream := TMemoryStream.Create;
+  try
+    try
+      if _sendTx then begin
+        txLength := Length(_txData);
+        tx := '';
 
-    stream.Write(_txData, Length(_txData));
-    stream.Position := 0;
+        for i := 0 to txLength - 1 do begin
+          tx := tx + AnsiChar(_txData[i]);
+        end;
 
-    _serial.SendStream(stream);
+        _serial.SendString(tx + _options.EolChar);
 
-    FreeAndNil(stream);
-
-    _sendTx := false;
-    SetLength(_txData, 0);
+        _sendTx := false;
+        SetLength(_txData, 0);
+      end;
+    except
+      on e: Exception do begin
+        ErrorEvent('SendTxData Exception: ' + e.Message);
+      end;
+    end;
+  finally
+    LeaveCriticalSection(_criticalSection);
   end;
-
-
-  LeaveCriticalSection(_criticalSection);
 end;
 
 {$ENDREGION}
@@ -189,10 +198,7 @@ begin
     end;
 
     SendTxData();
-
     ReadRxData();
-
-    Sleep(50);
   end;
 end;
 
