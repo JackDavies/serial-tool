@@ -51,6 +51,7 @@ object MainForm: TMainForm
       Width = 73
       Align = alRight
       Caption = 'Send'
+      Enabled = False
       OnClick = SendButtonClick
       TabOrder = 2
     end

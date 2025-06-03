@@ -66,6 +66,7 @@ begin
   ConnectButton.Caption:= 'Disconnect';
   PortListPanel.Enabled := false;
   BaudRatePanel.Enabled := false;
+  SendButton.Enabled := true;
 
   options := TSerialOptions.Create();
   options.Port:= PortsComboBox.Text;
@@ -83,6 +84,7 @@ begin
   ConnectButton.Caption:= 'Connect';
   PortListPanel.Enabled := true;
   BaudRatePanel.Enabled := true;
+  SendButton.Enabled := false;
 
   _serialThread.Disconnect();
   FreeAndNil(_serialThread);
