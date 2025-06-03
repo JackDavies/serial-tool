@@ -33,6 +33,7 @@ type
     procedure ConnectButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RefreshPortsButtonClick(Sender: TObject);
+    procedure SendButtonClick(Sender: TObject);
   private
     _serialThread : TSerialThread;
   private
@@ -41,6 +42,7 @@ type
     procedure Disconnect();
     procedure OnRX(RXData : TBytes);
     procedure OnError(ErrorMessage : string);
+    procedure Send();
     function GetPortNames() : TStringList;
   public
 
@@ -68,6 +70,7 @@ begin
   options := TSerialOptions.Create();
   options.Port:= PortsComboBox.Text;
   options.Baud:= StrToInt(BaudRateCombo.Text);
+  options.EolChar := #10;
 
   _serialThread := TSerialThread.Create(options);
   _serialThread.OnRX := @OnRX;
@@ -83,6 +86,22 @@ begin
 
   _serialThread.Disconnect();
   FreeAndNil(_serialThread);
+end;
+
+procedure TMainForm.Send();
+var
+  data : TBytes;
+  txt : string;
+  i : integer;
+begin
+  txt := InputEdit.Text;
+  SetLength(data, Length(txt));
+
+  for i := 0 to Length(txt) - 1 do begin
+    data[i] := Byte(txt.Chars[i]);
+  end;
+
+  _serialThread.Send(data);
 end;
 
 { Adapted from synaser.GetSerialPortNames: string; }
@@ -207,6 +226,11 @@ end;
 procedure TMainForm.RefreshPortsButtonClick(Sender: TObject);
 begin
   PopulatePortsList();
+end;
+
+procedure TMainForm.SendButtonClick(Sender: TObject);
+begin
+  Send();
 end;
 
 procedure TMainForm.ConnectButtonClick(Sender: TObject);
