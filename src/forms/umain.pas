@@ -16,13 +16,16 @@ type
     BaudRateCombo: TComboBox;
     BottomPanel: TPanel;
     BaudRatePanel: TPanel;
+    EolPanel: TPanel;
     PortLabel: TLabel;
     BaudLabel: TLabel;
+    EolLabel: TLabel;
     PortListPanel: TPanel;
     ConnectButton: TButton;
     InputTypeComboBox1: TComboBox;
     OutputSettingsPanel: TPanel;
     PortsComboBox: TComboBox;
+    EolCharComboBox: TComboBox;
     RefreshPortsButton: TSpeedButton;
     SendButton: TButton;
     CenterPanel: TPanel;
@@ -43,6 +46,7 @@ type
     procedure OnRX(RXData : TBytes);
     procedure OnError(ErrorMessage : string);
     procedure Send();
+    function GetEolChar() : string;
     function GetPortNames() : TStringList;
   public
 
@@ -66,12 +70,13 @@ begin
   ConnectButton.Caption:= 'Disconnect';
   PortListPanel.Enabled := false;
   BaudRatePanel.Enabled := false;
+  EolPanel.Enabled := false;
   SendButton.Enabled := true;
 
   options := TSerialOptions.Create();
   options.Port:= PortsComboBox.Text;
   options.Baud:= StrToInt(BaudRateCombo.Text);
-  options.EolChar := #10;
+  options.EolChar := GetEolChar();
 
   _serialThread := TSerialThread.Create(options);
   _serialThread.OnRX := @OnRX;
@@ -84,6 +89,7 @@ begin
   ConnectButton.Caption:= 'Connect';
   PortListPanel.Enabled := true;
   BaudRatePanel.Enabled := true;
+  EolPanel.Enabled := true;
   SendButton.Enabled := false;
 
   _serialThread.Disconnect();
@@ -104,6 +110,23 @@ begin
   end;
 
   _serialThread.Send(data);
+end;
+
+function TMainForm.GetEolChar() : string;
+var
+  selectedItem : string;
+begin
+  Result := '';
+
+  selectedItem := EolCharComboBox.Text;
+
+  case selectedItem of
+    'None' : Result := '';
+    'Null Char' : Result := #0;
+    'Line Feed (LF)' : Result := #10;
+    'Carriage return (CR)' : Result := #13;
+    'CRLF' : Result := #13#10;
+  end;
 end;
 
 { Adapted from synaser.GetSerialPortNames: string; }
