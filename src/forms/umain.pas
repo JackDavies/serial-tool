@@ -49,6 +49,8 @@ type
     function GetEolChar() : string;
     function GetPortNames() : TStringList;
     function FormatHex(txt : string) : string;
+    function HexToData(txt : string) : TBytes;
+    function FormatHexInput(txt : string) : string;
   public
 
   end;
@@ -110,22 +112,70 @@ begin
   end;
 end;
 
+function TMainForm.HexToData(txt : string) : TBytes;
+var
+  hexValues : TStringArray;
+  i : integer;
+  value : integer;
+begin
+  hexValues := txt.Split(' ');
+  SetLength(Result, Length(hexValues));
+
+  for i := 0 to Length(hexValues) - 1 do begin
+    value := StrToInt('$' + hexValues[i]);
+    if value > 255 then begin
+      raise Exception.Create(hexValues[i] + ' is > 255');
+    end;
+    Result[i] := value;
+  end;
+end;
+
+
+function TMainForm.FormatHexInput(txt : string) : string;
+begin
+  while (txt.Contains('  ')) do begin
+    txt := txt.Replace('  ', ' ',[rfReplaceAll]);
+  end;
+
+  if txt.StartsWith(' ') then begin
+    txt := txt.Remove(0, 1);
+  end;
+
+  if txt.EndsWith(' ') then begin
+    txt := txt.Remove(Length(txt) - 1, 1);
+  end;
+
+  Result := txt;
+end;
+
 procedure TMainForm.Send();
 var
   data : TBytes;
   txt : string;
   i : integer;
 begin
-  txt := InputEdit.Text;
-  SetLength(data, Length(txt));
+  try
+    txt := InputEdit.Text;
+    SetLength(data, Length(txt));
 
-  for i := 0 to Length(txt) - 1 do begin
-    data[i] := Byte(txt.Chars[i]);
+    if InputFormatComboBox.Text = 'ASCII' then begin
+      for i := 0 to Length(txt) - 1 do begin
+        data[i] := Byte(txt.Chars[i]);
+      end;
+      OutputMemo.Append('TX: ' + txt);
+    end
+    else begin
+      txt := FormatHexInput(txt);
+      data := HexToData(txt);
+      OutputMemo.Append('TX: [Hex] ' + txt);
+    end;
+
+    _serialThread.Send(data);
+  except
+    on e : Exception do begin
+      OutputMemo.Append('Send Error: ' + e.Message);
+    end;
   end;
-
-  OutputMemo.Append('TX: ' + txt);
-
-  _serialThread.Send(data);
 end;
 
 function TMainForm.GetEolChar() : string;
