@@ -326,7 +326,9 @@ end;
 
 procedure TMainForm.SendButtonClick(Sender: TObject);
 begin
-  Send();
+  if InputEdit.Text <> '' then begin
+    Send();
+  end;
 end;
 
 procedure TMainForm.ConnectButtonClick(Sender: TObject);
