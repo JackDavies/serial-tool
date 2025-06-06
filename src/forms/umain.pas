@@ -22,14 +22,14 @@ type
     EolLabel: TLabel;
     PortListPanel: TPanel;
     ConnectButton: TButton;
-    InputTypeComboBox1: TComboBox;
+    OutoutFormatComboBox: TComboBox;
     OutputSettingsPanel: TPanel;
     PortsComboBox: TComboBox;
     EolCharComboBox: TComboBox;
     RefreshPortsButton: TSpeedButton;
     SendButton: TButton;
     CenterPanel: TPanel;
-    InputTypeComboBox: TComboBox;
+    InputFormatComboBox: TComboBox;
     InputEdit: TEdit;
     OutputMemo: TMemo;
     TopPanel: TPanel;
@@ -48,6 +48,7 @@ type
     procedure Send();
     function GetEolChar() : string;
     function GetPortNames() : TStringList;
+    function FormatHex(txt : string) : string;
   public
 
   end;
@@ -96,6 +97,19 @@ begin
   FreeAndNil(_serialThread);
 end;
 
+function TMainForm.FormatHex(txt : string) : string;
+var
+  b : byte;
+  c : AnsiChar;
+  i : integer;
+begin
+  Result := '';
+  for i := 0 to Length(txt) do begin
+    c := txt.Chars[i];
+    Result := Result + ' ' + IntToHex(QWord(c), 2);
+  end;
+end;
+
 procedure TMainForm.Send();
 var
   data : TBytes;
@@ -108,6 +122,8 @@ begin
   for i := 0 to Length(txt) - 1 do begin
     data[i] := Byte(txt.Chars[i]);
   end;
+
+  OutputMemo.Append('TX: ' + txt);
 
   _serialThread.Send(data);
 end;
@@ -240,7 +256,12 @@ begin
     c := Char(RXData[i]);
     txt := txt + c;
   end;
-  OutputMemo.Append(txt);
+
+  if OutoutFormatComboBox.Text = 'Hex' then begin
+    txt := '[Hex] ' +  FormatHex(txt);
+  end;
+
+  OutputMemo.Append('RX: ' + txt);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
