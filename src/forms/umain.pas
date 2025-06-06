@@ -27,12 +27,14 @@ type
     PortsComboBox: TComboBox;
     EolCharComboBox: TComboBox;
     RefreshPortsButton: TSpeedButton;
+    ClearOutputButton: TSpeedButton;
     SendButton: TButton;
     CenterPanel: TPanel;
     InputFormatComboBox: TComboBox;
     InputEdit: TEdit;
     OutputMemo: TMemo;
     TopPanel: TPanel;
+    procedure ClearOutputButtonClick(Sender: TObject);
     procedure ConnectButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RefreshPortsButtonClick(Sender: TObject);
@@ -341,6 +343,11 @@ begin
   else begin
     Connect();
   end;
+end;
+
+procedure TMainForm.ClearOutputButtonClick(Sender: TObject);
+begin
+  OutputMemo.Clear;
 end;
 
 {$ENDREGION}
