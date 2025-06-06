@@ -176,6 +176,7 @@ begin
       OutputMemo.Append('Send Error: ' + e.Message);
     end;
   end;
+  OutputMemo.VertScrollBar.Position := OutputMemo.VertScrollBar.Size;
 end;
 
 function TMainForm.GetEolChar() : string;
@@ -312,6 +313,7 @@ begin
   end;
 
   OutputMemo.Append('RX: ' + txt);
+  OutputMemo.VertScrollBar.Position := OutputMemo.VertScrollBar.Size;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
