@@ -16,6 +16,7 @@ type
     BaudRateCombo: TComboBox;
     BottomPanel: TPanel;
     BaudRatePanel: TPanel;
+    SaveOutputButton: TSpeedButton;
     EolPanel: TPanel;
     PortLabel: TLabel;
     BaudLabel: TLabel;
@@ -38,6 +39,7 @@ type
     procedure ConnectButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RefreshPortsButtonClick(Sender: TObject);
+    procedure SaveOutputButtonClick(Sender: TObject);
     procedure SendButtonClick(Sender: TObject);
   private
     _serialThread : TSerialThread;
@@ -326,6 +328,25 @@ end;
 procedure TMainForm.RefreshPortsButtonClick(Sender: TObject);
 begin
   PopulatePortsList();
+end;
+
+procedure TMainForm.SaveOutputButtonClick(Sender: TObject);
+var
+  saveDialog : TSaveDialog;
+begin
+  saveDialog := TSaveDialog.Create(self);
+
+  saveDialog.Options:= [TOpenOption.ofOverwritePrompt];
+
+  if saveDialog.Execute then begin
+    try
+      OutputMemo.Lines.SaveToFile(saveDialog.FileName, TEncoding.ASCII);
+    except
+      on e :Exception do begin
+        OutputMemo.Append('Save Error: ' + e.Message);
+      end;
+    end;
+  end;
 end;
 
 procedure TMainForm.SendButtonClick(Sender: TObject);
