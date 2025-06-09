@@ -22,6 +22,7 @@ object MainForm: TMainForm
     object InputFormatComboBox: TComboBox
       Left = 1
       Height = 26
+      Hint = 'TX Format'
       Top = 1
       Width = 95
       Align = alLeft
@@ -32,6 +33,7 @@ object MainForm: TMainForm
         'Hex'
       )
       ParentShowHint = False
+      ShowHint = True
       Style = csOwnerDrawFixed
       TabOrder = 0
       Text = 'ASCII'
@@ -122,6 +124,7 @@ object MainForm: TMainForm
       object RefreshPortsButton: TSpeedButton
         Left = 278
         Height = 24
+        Hint = 'Refresh Port List'
         Top = 1
         Width = 23
         Align = alRight
@@ -202,6 +205,8 @@ object MainForm: TMainForm
           0000000000000000000000000000000000000000000000000000
         }
         OnClick = RefreshPortsButtonClick
+        ShowHint = True
+        ParentShowHint = False
       end
       object PortsComboBox: TComboBox
         Left = 37
