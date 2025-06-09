@@ -75,6 +75,7 @@ var
   options : TSerialOptions;
 begin
   ConnectButton.Caption:= 'Disconnect';
+  Self.Caption := 'Serial Tool ' + PortsComboBox.Text;
   PortListPanel.Enabled := false;
   BaudRatePanel.Enabled := false;
   EolPanel.Enabled := false;
@@ -94,6 +95,7 @@ end;
 procedure TMainForm.Disconnect();
 begin
   ConnectButton.Caption:= 'Connect';
+  Self.Caption := 'Serial Tool';
   PortListPanel.Enabled := true;
   BaudRatePanel.Enabled := true;
   EolPanel.Enabled := true;

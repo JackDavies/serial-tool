@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Height = 562
   Top = 172
   Width = 888
-  Caption = 'MainForm'
+  Caption = 'Serial Tool'
   ClientHeight = 562
   ClientWidth = 888
   DesignTimePPI = 94
