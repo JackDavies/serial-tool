@@ -42,7 +42,7 @@ object MainForm: TMainForm
       Left = 96
       Height = 26
       Top = 1
-      Width = 718
+      Width = 613
       Align = alClient
       TabOrder = 1
     end
@@ -56,6 +56,17 @@ object MainForm: TMainForm
       Enabled = False
       OnClick = SendButtonClick
       TabOrder = 2
+    end
+    object ClearOnSendCheckBox: TCheckBox
+      Left = 709
+      Height = 26
+      Top = 1
+      Width = 105
+      Align = alRight
+      Caption = 'Clear on send'
+      Checked = True
+      State = cbChecked
+      TabOrder = 3
     end
   end
   object CenterPanel: TPanel

@@ -16,6 +16,7 @@ type
     BaudRateCombo: TComboBox;
     BottomPanel: TPanel;
     BaudRatePanel: TPanel;
+    ClearOnSendCheckBox: TCheckBox;
     ClearOutputButton: TSpeedButton;
     EolPanel: TPanel;
     OutoutFormatComboBox: TComboBox;
@@ -183,6 +184,10 @@ begin
     end;
   end;
   OutputMemo.VertScrollBar.Position := OutputMemo.VertScrollBar.Size;
+
+  if ClearOnSendCheckBox.Checked then begin
+    InputEdit.Text := '';
+  end;
 end;
 
 function TMainForm.GetEolChar() : string;
