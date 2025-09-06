@@ -117,6 +117,7 @@ object MainForm: TMainForm
       Width = 83
       Align = alRight
       Caption = 'Connect'
+      Enabled = False
       OnClick = ConnectButtonClick
       TabOrder = 0
     end
@@ -226,6 +227,7 @@ object MainForm: TMainForm
         Width = 241
         Align = alClient
         ItemHeight = 0
+        OnChange = OptionChange
         Style = csOwnerDrawFixed
         TabOrder = 0
       end
@@ -288,6 +290,7 @@ object MainForm: TMainForm
           '576000'
           '921600'
         )
+        OnChange = OptionChange
         Style = csOwnerDrawFixed
         TabOrder = 0
       end
@@ -331,6 +334,7 @@ object MainForm: TMainForm
           'Carriage return (CR)'
           'CRLF'
         )
+        OnChange = OptionChange
         Style = csOwnerDrawFixed
         TabOrder = 0
       end

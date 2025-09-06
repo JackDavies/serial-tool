@@ -39,6 +39,7 @@ type
     procedure ClearOutputButtonClick(Sender: TObject);
     procedure ConnectButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure OptionChange(Sender: TObject);
     procedure RefreshPortsButtonClick(Sender: TObject);
     procedure SaveOutputButtonClick(Sender: TObject);
     procedure SendButtonClick(Sender: TObject);
@@ -332,9 +333,15 @@ begin
   PopulatePortsList();
 end;
 
+procedure TMainForm.OptionChange(Sender: TObject);
+begin
+  ConnectButton.Enabled := (PortsComboBox.Text <> '' ) and (EolCharComboBox.Text <> '') and (BaudRateCombo.Text <> '');
+end;
+
 procedure TMainForm.RefreshPortsButtonClick(Sender: TObject);
 begin
   PopulatePortsList();
+  OptionChange(Sender);
 end;
 
 procedure TMainForm.SaveOutputButtonClick(Sender: TObject);
