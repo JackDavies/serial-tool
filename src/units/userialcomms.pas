@@ -194,7 +194,8 @@ begin
 
   while(not Terminated) do begin
     if _serial.LastError <> 0 then begin
-      Synchronize(@ErrorEvent);
+      Queue(@ErrorEvent);
+      Terminate;
     end;
 
     SendTxData();

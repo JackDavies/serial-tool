@@ -303,6 +303,7 @@ end;
 procedure TMainForm.OnError(ErrorMessage : string);
 begin
   OutputMemo.Append('Error: ' + ErrorMessage);
+  Disconnect();
 end;
 
 procedure TMainForm.OnRX(RXData : TBytes);
